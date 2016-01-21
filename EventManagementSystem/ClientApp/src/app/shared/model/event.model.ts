@@ -1,8 +1,1 @@
-import { Guest } from './guest.model';
-
-export class Event {
-  id: number = 0;
-  name: string = '';
-  date: string = '';
-  guests: Guest[] = [];
-}
+"Wed Jan 20 2016 23:12:00 GMT-0800 (Pacific Standard Time)" 

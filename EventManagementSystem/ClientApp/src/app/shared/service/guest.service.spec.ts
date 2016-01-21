@@ -1,16 +1,1 @@
-import { TestBed } from '@angular/core/testing';
-
-import { GuestService } from './guest.service';
-
-describe('GuestService', () => {
-  let service: GuestService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(GuestService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+"Thu Jan 21 2016 08:03:00 GMT-0800 (Pacific Standard Time)" 

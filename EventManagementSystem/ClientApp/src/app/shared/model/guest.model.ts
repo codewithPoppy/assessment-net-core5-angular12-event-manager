@@ -1,14 +1,1 @@
-export class Guest {
-  id: number = 0;
-  firstName: string = '';
-  lastName: string = '';
-  fullName?: string = '';
-  email: string = '';
-  dateOfBirth: string = '';
-  allergies: Allergy[] = [];
-}
-
-export class Allergy {
-  id: number = 0;
-  name: string = '';
-}
+"Mon Feb 08 2016 12:06:00 GMT-0800 (Pacific Standard Time)" 

@@ -1,16 +1,1 @@
-import { TestBed } from '@angular/core/testing';
-
-import { ApiInterceptor } from './api.interceptor';
-
-describe('ApiInterceptor', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      ApiInterceptor
-      ]
-  }));
-
-  it('should be created', () => {
-    const interceptor: ApiInterceptor = TestBed.inject(ApiInterceptor);
-    expect(interceptor).toBeTruthy();
-  });
-});
+"Wed Feb 10 2016 14:42:00 GMT-0800 (Pacific Standard Time)" 

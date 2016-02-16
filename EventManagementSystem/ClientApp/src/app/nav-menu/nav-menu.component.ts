@@ -1,18 +1,1 @@
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-nav-menu',
-  templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.sass'],
-})
-export class NavMenuComponent {
-  isExpanded = false;
-
-  collapse() {
-    this.isExpanded = false;
-  }
-
-  toggle() {
-    this.isExpanded = !this.isExpanded;
-  }
-}
+"Mon Feb 15 2016 16:46:00 GMT-0800 (Pacific Standard Time)" 

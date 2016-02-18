@@ -1,1 +1,16 @@
-"Mon Feb 01 2016 21:53:00 GMT-0800 (Pacific Standard Time)" 
+import { Injectable, TemplateRef } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ToastService {
+  toasts: any[] = [];
+
+  show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
+    this.toasts.push({ textOrTpl, ...options });
+  }
+
+  remove(toast: any) {
+    this.toasts = this.toasts.filter((t) => t !== toast);
+  }
+}

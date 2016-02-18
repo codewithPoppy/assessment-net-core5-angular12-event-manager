@@ -1,1 +1,29 @@
-"Thu Feb 11 2016 18:53:00 GMT-0800 (Pacific Standard Time)" 
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace EventManagementSystem.Models.Attribute
+{
+  public class CollectionCountAttribute : ValidationAttribute
+  {
+    private readonly int _minCount;
+
+    public CollectionCountAttribute(int minCount)
+    {
+      _minCount = minCount;
+    }
+
+    public override bool IsValid(object value)
+    {
+      var collection = value as ICollection;
+      if (collection != null)
+      {
+        return collection.Count >= _minCount;
+      }
+      return false;
+    }
+  }
+}

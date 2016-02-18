@@ -1,1 +1,25 @@
-"Wed Feb 17 2016 05:58:00 GMT-0800 (Pacific Standard Time)" 
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { GuestFormComponent } from './guest-form.component';
+
+describe('GuestFormComponent', () => {
+  let component: GuestFormComponent;
+  let fixture: ComponentFixture<GuestFormComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ GuestFormComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(GuestFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

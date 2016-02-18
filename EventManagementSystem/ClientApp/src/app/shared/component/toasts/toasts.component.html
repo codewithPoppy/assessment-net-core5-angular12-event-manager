@@ -1,1 +1,13 @@
-"Fri Feb 12 2016 22:39:00 GMT-0800 (Pacific Standard Time)" 
+<ngb-toast
+  *ngFor="let toast of toastService.toasts"
+  [class]="toast.classname"
+  [autohide]="true"
+  [delay]="toast.delay || 5000"
+  (hidden)="toastService.remove(toast)"
+>
+  <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
+    <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+  </ng-template>
+
+  <ng-template #text>{{ toast.textOrTpl }}</ng-template>
+</ngb-toast>

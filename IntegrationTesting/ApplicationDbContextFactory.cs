@@ -1,1 +1,18 @@
-"Tue Feb 16 2016 07:55:00 GMT-0800 (Pacific Standard Time)" 
+﻿using EventManagementSystem.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+
+namespace IntegrationTesting
+{
+  public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+  {
+    public ApplicationDbContext CreateDbContext(string[] args)
+    {
+      var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+      optionsBuilder.UseSqlServer(
+        "Server=(localdb)\\mssqllocaldb;Database=EFIntegration.Testing;Trusted_Connection=True;");
+
+      return new ApplicationDbContext(optionsBuilder.Options);
+    }
+  }
+}

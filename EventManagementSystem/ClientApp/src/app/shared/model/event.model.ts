@@ -1,1 +1,8 @@
-"Mon Feb 15 2016 09:12:00 GMT-0800 (Pacific Standard Time)" 
+import { Guest } from './guest.model';
+
+export class Event {
+  id: number = 0;
+  name: string = '';
+  date: string = '';
+  guests: Guest[] = [];
+}

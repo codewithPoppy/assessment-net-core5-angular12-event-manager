@@ -1,1 +1,25 @@
-"Fri Feb 05 2016 11:09:00 GMT-0800 (Pacific Standard Time)" 
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { NavMenuComponent } from './nav-menu.component';
+
+describe('NavMenuComponent', () => {
+  let component: NavMenuComponent;
+  let fixture: ComponentFixture<NavMenuComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ NavMenuComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NavMenuComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

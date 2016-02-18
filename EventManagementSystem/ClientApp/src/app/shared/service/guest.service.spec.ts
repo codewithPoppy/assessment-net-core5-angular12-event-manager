@@ -1,1 +1,16 @@
-"Wed Jan 27 2016 13:10:00 GMT-0800 (Pacific Standard Time)" 
+import { TestBed } from '@angular/core/testing';
+
+import { GuestService } from './guest.service';
+
+describe('GuestService', () => {
+  let service: GuestService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(GuestService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

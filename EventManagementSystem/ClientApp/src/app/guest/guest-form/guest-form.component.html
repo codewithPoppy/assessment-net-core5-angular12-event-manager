@@ -1,0 +1,88 @@
+<form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+  <input type="hidden" name="id" [value]="service.formData.id" />
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label>First Name</label>
+      <input
+        class="form-control form-control-lg"
+        placeholder="First Name"
+        name="firstName"
+        #firstName="ngModel"
+        [(ngModel)]="service.formData.firstName"
+        required
+        [class.invalid]="firstName.invalid &#038;&#038; firstName.touched"
+      />
+    </div>
+    <div class="form-group col-md-6">
+      <label>Last Name</label>
+      <input
+        class="form-control form-control-lg"
+        placeholder="Last Name"
+        name="lastName"
+        #lastName="ngModel"
+        [(ngModel)]="service.formData.lastName"
+        required
+        [class.invalid]="lastName.invalid &#038;&#038; lastName.touched"
+      />
+    </div>
+  </div>
+  <div class="form-group mt-4">
+    <label>Email</label>
+    <input
+      class="form-control form-control-lg"
+      placeholder="Email"
+      name="email"
+      #email="ngModel"
+      [(ngModel)]="service.formData.email"
+      required
+      email
+      [class.invalid]="email.invalid &#038;&#038; email.touched"
+    />
+  </div>
+  <div class="form-group mt-4">
+    <label>Date of Birth</label>
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="yyyy-mm-dd"
+        name="dateOfBirth"
+        [(ngModel)]="dateOfBirthModel"
+        ngbDatepicker
+        #dateOfBirth="ngModel"
+        #eleDateOfBirth="ngbDatepicker"
+        [startDate]="dateOfBirthModel"
+        [minDate]="{ year: 1950, month: 1, day: 1 }"
+        [maxDate]="{ year: 2032, month: 12, day: 31 }"
+        required
+        maxlength="10"
+        minlength="10"
+        [class.invalid]="dateOfBirth.status == 'INVALID'"
+      />
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary calendar"
+          (click)="eleDateOfBirth.toggle()"
+          type="button"
+        >
+          <fa-icon [icon]="faCalendar"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="form-row mt-4">
+    <button
+      class="btn btn-primary btn-lg btn-block m-1"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Submit
+    </button>
+    <button
+      class="btn btn-secondary btn-lg btn-block m-1"
+      type="button"
+      (click)="goBack()"
+    >
+      Cancel
+    </button>
+  </div>
+</form>

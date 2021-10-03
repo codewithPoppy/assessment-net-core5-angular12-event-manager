@@ -1,0 +1,61 @@
+<form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+  <input type="hidden" name="id" [value]="service.formData.id" />
+  <div class="form-group">
+    <label>Name</label>
+    <input
+      class="form-control form-control-lg"
+      placeholder="Name"
+      name="name"
+      #name="ngModel"
+      [(ngModel)]="service.formData.name"
+      required
+      [class.invalid]="name.invalid &#038;&#038; name.touched"
+    />
+  </div>
+  <div class="form-group mt-4">
+    <label>Date</label>
+    <div class="input-group">
+      <input
+        class="form-control"
+        placeholder="yyyy-mm-dd"
+        name="date"
+        [(ngModel)]="dateModel"
+        ngbDatepicker
+        [startDate]="dateModel"
+        [minDate]="{ year: 1950, month: 1, day: 1 }"
+        [maxDate]="{ year: 2032, month: 12, day: 31 }"
+        #date="ngModel"
+        #eleDate="ngbDatepicker"
+        required
+        maxlength="10"
+        minlength="10"
+        [class.invalid]="date.status == 'INVALID'"
+      />
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary calendar"
+          (click)="eleDate.toggle()"
+          type="button"
+        >
+          <fa-icon [icon]="faCalendar"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="form-row mt-4">
+    <button
+      class="btn btn-primary btn-lg btn-block m-1"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Submit
+    </button>
+    <button
+      class="btn btn-secondary btn-lg btn-block m-1"
+      type="button"
+      (click)="goBack()"
+    >
+      Cancel
+    </button>
+  </div>
+</form>

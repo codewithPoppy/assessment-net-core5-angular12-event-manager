@@ -1,0 +1,42 @@
+<div class="bg-light rounded-3 py-3">
+  <h1 class="display-4 text-center">Event Register</h1>
+</div>
+<div
+  *ngIf="!service.list"
+  style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  "
+>
+  <span class="spinner spinner-inline"> Loading Events... </span>
+  <span> Loading Events... </span>
+</div>
+<a class="float" [routerLink]="['new']">
+  <fa-icon [icon]="faPlus" size="2x" class="my-float"></fa-icon>
+</a>
+<div class="row">
+  <div
+    *ngFor="let e of service.list"
+    class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-4"
+  >
+    <div class="card">
+      <div class="card-header">
+        {{ e.name }}
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <fa-icon [icon]="faCalendar"></fa-icon> {{ e.date | date }}
+        </p>
+        <p class="card-text">
+          Invited {{ e.guests ? e.guests.length : 0 }} guests
+        </p>
+        <div class="float-end">
+          <a [routerLink]="[e.id, 'edit']" class="m-1">Edit</a>
+          <a (click)="onDelete(e.id)" class="m-1">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -28,27 +28,8 @@ namespace EventManagementSystem.Models
     [DataType(DataType.Date)]
     public DateTime DateOfBirth { get; set; }
 
-    public ICollection<GuestAllergy> GuestAllergies { get; set; }
+    public ICollection<Allergy> Allergies { get; set; }
 
-    public ICollection<EventGuest> EventGuests { get; set; }
-  }
-
-  public class Allergy
-  {
-    [Key]
-    public int Id { get; set; }
-
-    [Required]
-    public string Name { get; set; }
-
-    public ICollection<GuestAllergy> GuestAllergies { get; set; }
-  }
-
-  public class GuestAllergy
-  {
-    public int GuestId { get; set; }
-    public Guest Guest { get; set; }
-    public int AllergyId { get; set; }
-    public Allergy Allergy { get; set; }
+    public ICollection<Event> Events { get; set; }
   }
 }

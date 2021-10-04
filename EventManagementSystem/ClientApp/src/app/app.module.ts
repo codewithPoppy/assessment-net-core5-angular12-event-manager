@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TagInputModule } from 'ngx-chips';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GuestComponent } from './guest/guest.component';
 import { GuestFormComponent } from './guest/guest-form/guest-form.component';
@@ -32,11 +34,13 @@ import { ToastsComponent } from './shared/component/toasts/toasts.component';
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     FormsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
     NgbModule,
     FontAwesomeModule,
+    TagInputModule,
   ],
   providers: [
     {

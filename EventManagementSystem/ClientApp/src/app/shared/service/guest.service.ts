@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Guest } from '../model/guest.model';
+import { Allergy, Guest } from '../model/guest.model';
 import { ToastService } from '../component/toast-service/toast.service';
 
 @Injectable({
@@ -9,8 +9,24 @@ import { ToastService } from '../component/toast-service/toast.service';
 export class GuestService {
   formData: Guest = new Guest();
   list: Guest[] = [];
+  allergies: Allergy[] = [];
 
   constructor(private http: HttpClient, private toast: ToastService) {}
+
+  refreshAllergies() {
+    this.http
+      .get('allergies')
+      .toPromise()
+      .then((res) => {
+        this.allergies = res as Allergy[];
+      })
+      .catch((err: Error) =>
+        this.toast.show(err.message, {
+          classname: 'bg-danger text-light',
+          delay: 5000,
+        })
+      );
+  }
 
   refreshList() {
     this.http

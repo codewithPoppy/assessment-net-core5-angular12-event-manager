@@ -25,14 +25,14 @@ namespace EventManagementSystem.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
     {
-      return await _context.Events.ToListAsync();
+      return await _context.Events.Include(e => e.Guests).ToListAsync();
     }
 
     // GET: api/Events/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Event>> GetEvent(int id)
     {
-      var @event = await _context.Events.FindAsync(id);
+      var @event = await _context.Events.Include(e => e.Guests).SingleAsync(e => e.Id == id);
 
       if (@event == null)
       {
@@ -57,6 +57,13 @@ namespace EventManagementSystem.Controllers
 
       try
       {
+        Event eventOrg = await _context.Events.Include(e => e.Guests).SingleAsync(e => e.Id == id);
+        List<Guest> guestList = new List<Guest>();
+        foreach (Guest guest in @event.Guests)
+        {
+          guestList.Add(_context.Guests.Find(guest.Id));
+        }
+        @event.Guests = guestList;
         await _context.SaveChangesAsync();
       }
       catch (DbUpdateConcurrencyException)
@@ -80,6 +87,12 @@ namespace EventManagementSystem.Controllers
     [HttpPost]
     public async Task<ActionResult<Event>> PostEvent(Event @event)
     {
+      List<Guest> guestList = new List<Guest>();
+      foreach (var guest in @event.Guests)
+      {
+        guestList.Add(_context.Guests.Find(guest.Id));
+      }
+      @event.Guests = guestList;
       _context.Events.Add(@event);
       await _context.SaveChangesAsync();
 

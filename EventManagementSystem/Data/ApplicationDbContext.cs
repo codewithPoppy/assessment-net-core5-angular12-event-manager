@@ -11,8 +11,8 @@ namespace EventManagementSystem.Data
   public class ApplicationDbContext : DbContext
   {
     public DbSet<Guest> Guests { get; set; }
+    public DbSet<Allergy> Allergies { get; set; }
     public DbSet<Event> Events { get; set; }
-    public DbSet<EventGuest> EventGuests { get; set; }
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
@@ -23,18 +23,10 @@ namespace EventManagementSystem.Data
       modelBuilder.Entity<Guest>()
         .HasIndex(x => x.Email)
         .IsUnique();
-
-      // Guest and Allergy RelationShip
-      modelBuilder.Entity<GuestAllergy>()
-       .HasKey(ga => new { ga.GuestId, ga.AllergyId });
-      modelBuilder.Entity<GuestAllergy>()
-        .HasOne(ga => ga.Guest)
-        .WithMany(g => g.GuestAllergies)
-        .HasForeignKey(ga => ga.GuestId);
-      modelBuilder.Entity<GuestAllergy>()
-        .HasOne(ga => ga.Allergy)
-        .WithMany(a => a.GuestAllergies)
-        .HasForeignKey(ga => ga.AllergyId);
+      // Unique Allergy Property
+      modelBuilder.Entity<Allergy>()
+        .HasIndex(x => x.NormalizedName)
+        .IsUnique();
     }
   }
 }

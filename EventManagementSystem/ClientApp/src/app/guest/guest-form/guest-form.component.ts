@@ -5,7 +5,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/shared/component/toast-service/toast.service';
-import { Guest } from 'src/app/shared/model/guest.model';
+import { Allergy, Guest } from 'src/app/shared/model/guest.model';
 import { GuestService } from 'src/app/shared/service/guest.service';
 
 @Component({
@@ -24,12 +24,15 @@ export class GuestFormComponent implements OnInit {
     private _location: Location,
     private router: Router
   ) {
+    // get allergies for auto complete
+    this.service.refreshAllergies();
     // Get id if present in the URL
     this.route.params.subscribe((params: Params) => {
       if (params['id']) {
         this.service.getGuest(params['id']).subscribe(
           (res: any) => {
             this.service.formData = res as Guest;
+            // set current date of date picker
             this.setDateOfBirth(this.service.formData.dateOfBirth);
           },
           (err: Error) =>
@@ -45,20 +48,29 @@ export class GuestFormComponent implements OnInit {
   ngOnInit(): void {}
 
   setDateOfBirth(dateOfBirth: string) {
-    const date: Date = new Date(dateOfBirth);
+    const date: Date = new Date(Date.parse(dateOfBirth));
     this.dateOfBirthModel = {
-      year: date.getUTCFullYear(),
-      month: date.getUTCMonth(),
-      day: date.getUTCDate(),
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
     };
   }
 
   onSubmit(form: NgForm) {
-    this.service.formData.dateOfBirth = new Date(
+    // date sync
+    let date: Date = new Date(
       this.dateOfBirthModel.year,
-      this.dateOfBirthModel.month,
-      this.dateOfBirthModel.day
-    ).toISOString();
+      this.dateOfBirthModel.month
+    );
+    date.setUTCDate(this.dateOfBirthModel.day);
+    this.service.formData.dateOfBirth = date.toISOString();
+    // guests sync
+    this.service.formData.allergies = this.service.formData.allergies.map(
+      (allergy) => ({
+        id: isNaN(allergy.id) ? 0 : allergy.id,
+        name: allergy.name,
+      })
+    );
     if (this.service.formData.id == 0) this.insertRecord(form);
     else this.updateRecord(form);
     this.router.navigateByUrl(`guests`);
@@ -68,6 +80,7 @@ export class GuestFormComponent implements OnInit {
     this.service.createGuest().subscribe(
       (res) => {
         this.resetForm(form);
+        this.service.refreshList();
         this.router.navigateByUrl(`guests`);
       },
       (err: Error) =>
@@ -87,6 +100,7 @@ export class GuestFormComponent implements OnInit {
     this.service.updateGuest().subscribe(
       (res) => {
         this.resetForm(form);
+        this.service.refreshList();
         this.router.navigateByUrl(`guests`);
       },
       (err: Error) =>

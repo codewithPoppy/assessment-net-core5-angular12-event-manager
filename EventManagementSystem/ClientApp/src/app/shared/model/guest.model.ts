@@ -5,5 +5,10 @@ export class Guest {
   fullName?: string = '';
   email: string = '';
   dateOfBirth: string = '';
-  allergies: string[] = [];
+  allergies: Allergy[] = [];
+}
+
+export class Allergy {
+  id: number = 0;
+  name: string = '';
 }

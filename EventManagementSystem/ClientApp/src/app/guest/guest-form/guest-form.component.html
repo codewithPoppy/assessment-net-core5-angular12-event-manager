@@ -69,6 +69,24 @@
       </div>
     </div>
   </div>
+  <div class="form-group mt-4">
+    <label>Allergies</label>
+    <tag-input
+      name="allergies"
+      [(ngModel)]="service.formData.allergies"
+      [identifyBy]="'id'"
+      [displayBy]="'name'"
+    >
+      <tag-input-dropdown
+        [autocompleteItems]="service.allergies"
+        [identifyBy]="'id'"
+        [displayBy]="'name'"
+        [showDropdownIfEmpty]="true"
+        [dynamicUpdate]="false"
+      >
+      </tag-input-dropdown>
+    </tag-input>
+  </div>
   <div class="form-row mt-4">
     <button
       class="btn btn-primary btn-lg btn-block m-1"

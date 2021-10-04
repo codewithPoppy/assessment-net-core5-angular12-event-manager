@@ -28,6 +28,7 @@
     "@popperjs/core": "^2.9.2",
     "ajv": "^6.9.1",
     "bootstrap": "^5.0.2",
+    "ngx-chips": "^2.2.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -19,28 +19,20 @@ namespace EventManagementSystem.Controllers
     public GuestsController(ApplicationDbContext context)
     {
       _context = context;
-
-      if (!_context.Guests.Any())
-      {
-        _context.Guests.Add(new Guest { FirstName = "Tech", LastName = "Standone", Email = "techstandone@outlook.com", DateOfBirth = DateTime.Today });
-        _context.Guests.Add(new Guest { FirstName = "Milos", LastName = "Zrnic", Email = "zrnicmilos1987@gmail.com", DateOfBirth = DateTime.Today });
-        _context.Guests.Add(new Guest { FirstName = "Master", LastName = "Helios", Email = "helios0722@outlook.com", DateOfBirth = DateTime.Today });
-        _context.SaveChanges();
-      }
     }
 
     // GET: api/Guests
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Guest>>> GetGuests()
     {
-      return await _context.Guests.ToListAsync();
+      return await _context.Guests.Include(g => g.Allergies).ToListAsync();
     }
 
     // GET: api/Guests/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Guest>> GetGuest(int id)
     {
-      var guest = await _context.Guests.FindAsync(id);
+      var guest = await _context.Guests.Include(g => g.Allergies).SingleAsync(g => g.Id == id);
 
       if (guest == null)
       {
@@ -56,7 +48,6 @@ namespace EventManagementSystem.Controllers
     [HttpPut("{id}")]
     public async Task<IActionResult> PutGuest(int id, Guest guest)
     {
-      guest.DateOfBirth = DateTime.Today;
       if (id != guest.Id)
       {
         return BadRequest();
@@ -66,6 +57,16 @@ namespace EventManagementSystem.Controllers
 
       try
       {
+        Guest guestOrg = await _context.Guests.Include(g => g.Allergies).SingleAsync(g => g.Id == id);
+        List<Allergy> allergyList = new List<Allergy>();
+        foreach (Allergy allergy in guest.Allergies)
+        {
+          if (allergy.Id == 0)
+            allergyList.Add(new Allergy(allergy.Name));
+          else
+            allergyList.Add(_context.Allergies.Find(allergy.Id));
+        }
+        guest.Allergies = allergyList;
         await _context.SaveChangesAsync();
       }
       catch (DbUpdateConcurrencyException)
@@ -87,12 +88,24 @@ namespace EventManagementSystem.Controllers
     // To protect from overposting attacks, enable the specific properties you want to bind to, for
     // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
     [HttpPost]
-    public async Task<ActionResult<Guest>> PostGuest(Guest guest)
+    public async Task<ActionResult<Guest>> PostGuest(Guest guest, [FromForm] Allergy[] allergies)
     {
+      List<Allergy> allergyList = new List<Allergy>();
+      foreach (Allergy allergy in guest.Allergies)
+      {
+        if (allergy.Id == 0)
+          allergyList.Add(new Allergy(allergy.Name));
+        else
+          allergyList.Add(_context.Allergies.Find(allergy.Id));
+      }
+      guest.Allergies = allergyList;
       _context.Guests.Add(guest);
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction("GetGuest", new { id = guest.Id }, guest);
+      return CreatedAtAction("GetGuest", new
+      {
+        id = guest.Id
+      }, guest);
     }
 
     // DELETE: api/Guests/5

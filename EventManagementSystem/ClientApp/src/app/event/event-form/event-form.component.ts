@@ -15,7 +15,7 @@ import { ToastService } from 'src/app/shared/component/toast-service/toast.servi
 })
 export class EventFormComponent implements OnInit {
   faCalendar = faCalendar;
-  dateModel: NgbDateStruct = { year: 1985, month: 7, day: 15 };
+  dateModel: NgbDateStruct;
 
   constructor(
     public service: EventService,
@@ -24,12 +24,24 @@ export class EventFormComponent implements OnInit {
     private router: Router,
     private _location: Location
   ) {
+    // set start date as today
+    const today: Date = new Date();
+    this.dateModel = {
+      year: today.getFullYear(),
+      month: today.getMonth() + 1,
+      day: today.getDate(),
+    };
+
+    // get guests for auto complete
+    this.service.refreshGuests();
+
     // Get id if present in the URL
     this.route.params.subscribe((params: Params) => {
       if (params['id']) {
         this.service.getEvent(params['id']).subscribe(
           (res) => {
             this.service.formData = res as Event;
+            // set current date of date picker
             this.setDate(this.service.formData.date);
           },
           (err: Error) =>
@@ -45,20 +57,23 @@ export class EventFormComponent implements OnInit {
   ngOnInit(): void {}
 
   setDate(dateStr: string) {
-    const date: Date = new Date(dateStr);
+    const date: Date = new Date(Date.parse(dateStr));
     this.dateModel = {
-      year: date.getUTCFullYear(),
-      month: date.getUTCMonth(),
-      day: date.getUTCDate(),
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
     };
   }
 
   onSubmit(form: NgForm) {
-    this.service.formData.date = new Date(
-      this.dateModel.year,
-      this.dateModel.month,
-      this.dateModel.day
-    ).toISOString();
+    // date sync
+    let date: Date = new Date(this.dateModel.year, this.dateModel.month);
+    date.setUTCDate(this.dateModel.day);
+    this.service.formData.date = date.toISOString();
+    // guests sync
+    this.service.formData.guests = this.service.formData.guests.map(
+      (guest) => ({ ...guest, id: isNaN(guest.id) ? 0 : guest.id })
+    );
     if (this.service.formData.id == 0) this.insertRecord(form);
     else this.updateRecord(form);
     this.router.navigateByUrl(`events`);
@@ -68,6 +83,7 @@ export class EventFormComponent implements OnInit {
     this.service.createEvent().subscribe(
       (res) => {
         this.resetForm(form);
+        this.service.refreshList();
         this.router.navigateByUrl(`events`);
       },
       (err: Error) =>
@@ -87,6 +103,7 @@ export class EventFormComponent implements OnInit {
     this.service.updateEvent().subscribe(
       (res) => {
         this.resetForm(form);
+        this.service.refreshList();
         this.router.navigateByUrl(`events`);
       },
       (err: Error) =>

@@ -22,8 +22,6 @@
         [(ngModel)]="dateModel"
         ngbDatepicker
         [startDate]="dateModel"
-        [minDate]="{ year: 1950, month: 1, day: 1 }"
-        [maxDate]="{ year: 2032, month: 12, day: 31 }"
         #date="ngModel"
         #eleDate="ngbDatepicker"
         required
@@ -41,6 +39,25 @@
         </button>
       </div>
     </div>
+  </div>
+  <div class="form-group mt-4">
+    <label>Guests</label>
+    <tag-input
+      name="guests"
+      [(ngModel)]="service.formData.guests"
+      [identifyBy]="'id'"
+      [displayBy]="'fullName'"
+      [onlyFromAutocomplete]="true"
+    >
+      <tag-input-dropdown
+        [autocompleteItems]="service.guests"
+        [identifyBy]="'id'"
+        [displayBy]="'fullName'"
+        [showDropdownIfEmpty]="true"
+        [dynamicUpdate]="false"
+      >
+      </tag-input-dropdown>
+    </tag-input>
   </div>
   <div class="form-row mt-4">
     <button
